@@ -1,4 +1,4 @@
-package t3_CRUD;
+package t4_CRUD;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,6 +21,8 @@ public class HoewonDAO2 {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			String url = "jdbc:mysql://localhost:3306/javaclass";
+//			String url = "jdbc:mysql://127.0.0.1:3306/javaclass";
+//			String url = "jdbc:mysql://192.168.50.70:3306/javaclass";
 			String user = "atom";
 			String password = "1234";
 			conn = DriverManager.getConnection(url, user, password);
@@ -107,13 +109,12 @@ public class HoewonDAO2 {
 		
 		return vo;
 	}
-	
+/*	
 	//회원자료 수정처리
 	//수정할 항목? 1.성명 2.나이 3.성별 4.주소
 	public void setUpdate(int idx, int choice, String content) {
 		try {
 			stmt = conn.createStatement();
-			sql = "";
 			if(choice == 1) {
 				sql = "update hoewon set name='"+content+"' where idx ="+idx; 
 			}
@@ -133,6 +134,7 @@ public class HoewonDAO2 {
 			stmtClose();
 		}
 	}
+*/
 	// 회원 삭제 처리
 	public void setDelete(String name) {
 		try {
@@ -157,5 +159,22 @@ public class HoewonDAO2 {
 		} finally { // 메모장처럼 생긴거 선택
 			stmtClose();
 		}
+	}
+
+	// 회원정보 수정하기
+	public int setUpdate(HoewonVO vo) {
+		int res = 0;
+		
+		try {
+			stmt = conn.createStatement();
+			sql = "update hoewon set name='"+vo.getName()+"', age="+vo.getAge()+", gender='"+vo.getGender()+"', address='"+vo.getAddress()+"' where idx="+vo.getIdx(); 
+			res = stmt.executeUpdate(sql);
+			// System.out.println("res : "+res); // 확인후 주석처리
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally { // 메모장처럼 생긴거 선택
+			stmtClose();
+		}
+		return res;
 	}
 }
